@@ -87,10 +87,29 @@
         width: 700px;
         height: 500px;
       }
+
+      #message {
+        color: red;
+      }
+
+      #instructions {
+        color: gray;
+      }
+
+      #loading {
+        width: 30px;
+        position: relative;
+        top: 10px;
+        display: none;
+      }
     </style>
   </head>
   <body>
     <div class="background">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed velit dignissim sodales ut eu sem integer vitae. Purus semper eget duis at. Amet purus gravida quis blandit turpis. Ac turpis egestas sed tempus urna et. Dolor sit amet consectetur adipiscing elit. Tortor aliquam nulla facilisi cras fermentum odio. Et magnis dis parturient montes nascetur ridiculus. Justo eget magna fermentum iaculis. Morbi tincidunt ornare massa eget egestas purus.
+
+      Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus. Molestie nunc non blandit massa. Urna nec tincidunt praesent semper feugiat nibh sed pulvinar proin. Ut sem viverra aliquet eget sit amet tellus cras adipiscing. Tristique nulla aliquet enim tortor at auctor urna nunc. Viverra mauris in aliquam sem fringilla ut morbi. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Tellus in hac habitasse platea dictumst vestibulum rhoncus est. Etiam sit amet nisl purus in mollis nunc sed. At consectetur lorem donec massa.
+
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed velit dignissim sodales ut eu sem integer vitae. Purus semper eget duis at. Amet purus gravida quis blandit turpis. Ac turpis egestas sed tempus urna et. Dolor sit amet consectetur adipiscing elit. Tortor aliquam nulla facilisi cras fermentum odio. Et magnis dis parturient montes nascetur ridiculus. Justo eget magna fermentum iaculis. Morbi tincidunt ornare massa eget egestas purus.
 
       Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus. Molestie nunc non blandit massa. Urna nec tincidunt praesent semper feugiat nibh sed pulvinar proin. Ut sem viverra aliquet eget sit amet tellus cras adipiscing. Tristique nulla aliquet enim tortor at auctor urna nunc. Viverra mauris in aliquam sem fringilla ut morbi. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Tellus in hac habitasse platea dictumst vestibulum rhoncus est. Etiam sit amet nisl purus in mollis nunc sed. At consectetur lorem donec massa.
@@ -101,7 +120,7 @@
         <fieldset>
           <h1>Speakify</h1>
           <h3>CSV text to speech synthesizer</h3>
-          <p id="description">Speakify uses the soundoftext API to access Google's speech synthesis capabilities and rapidly download pronunciations for wordlists</p>
+          <p id="description">Speakify uses the soundoftext API to access Google's speech synthesis capabilities and rapidly download pronunciations for wordlists.</p>
 
           <label for="languages">Choose a language</label>
           <select class="field__select" name="languages" id="languages">
@@ -159,15 +178,17 @@
             <option value="vi-VN">Vietnamese</option>
             <option value="cy">Welsh</option>
           </select>
-          <p>Choose a CSV file:</p>
+          <p>Choose a CSV file:<br><span id="instructions">Words should be in individual cells in the first column of the CSV file.</span></p>
           <div class ="form-row">
               <input type="file"
                      id="words" name="words"
                      accept=".csv">
           </div>
           <button type="button" id="confirm">Synthesise</button>
+
+          <img src="loading.gif" id="loading">
+          <p id="message"></p>
         </fieldset>
-        <p id="message"></p>
       </div>
 
     </div>
@@ -191,6 +212,12 @@
       }
 
       $("#confirm").click(() => {
+
+        if(!document.getElementById("languages").value || !document.getElementById("words").files[0]) {
+          return messageBox.innerText = "Please add a CSV file"
+        }
+
+        $("#loading").toggle();
 
         let language = document.getElementById("languages").value;
         console.log(language);
@@ -248,6 +275,7 @@
 
             console.log(finalArray);
 
+
             // create new JSZip
 
             let zip = new JSZip();;
@@ -268,11 +296,29 @@
                   console.log(result.location)
                   let url = result.location;
                   if(!url) {
-                    console.log(`URL for ${word} not found`);
-                    return messageBox.innerText = `URL for ${word} not found`;
+                    messageBox.innerText += `URL for ${word} not found`;
+                    return console.log(`URL for ${word} not found`);
                   }
-                  folder.file(`${i + 1}-${word}.mp3`, url)
-                  resolve()
+
+                  // $.ajax({
+                  //   url: url,
+                  //   type: `https://cors-anywhere.herokuapp.com/${url}`,
+                  // }).then(data => {
+                  //     console.log(data)
+                  //     folder.file(`${i + 1}-${word}.mp3`, data, {binary:true})
+                  //     resolve()
+                  // }).catch(e => console.log(e))
+
+                  JSZipUtils.getBinaryContent(`https://cors-anywhere.herokuapp.com/${url}`, function (err, data) {
+                   if(err) {
+                   throw err; // or handle the error
+                   }
+
+                   console.log(data)
+                   folder.file(`${i + 1}-${word}.mp3`, data, {binary:true})
+                   resolve()
+               });
+
                 }).catch(e => reject(e));
               })
             }
@@ -282,9 +328,10 @@
               .then(function(content) {
                   // Force down of the Zip file
                   saveAs(content, "sounds.zip");
+                  $("#loading").toggle();
               });
             }).catch(e => {
-              messageBox.innerText = e;
+              console.log(e)
             })
         });
       })
