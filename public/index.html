@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Speakify</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito|Pacifico" rel="stylesheet">
+
+    <style media="screen">
+
+      body {
+        margin: 0 auto;
+        font-family: 'Nunito', sans-serif;
+        background-color: teal;
+      }
+
+      h1 {
+        font-family: 'Pacifico', cursive;
+        font-size: 60px;
+        margin-bottom: -5px;
+      }
+
+      #main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        text-align: center;
+      }
+
+      fieldset {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      #words {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        background-color: #efefef;
+      }
+
+      #words:focus {
+        outline: 0;
+      }
+
+      #confirm {
+        padding: 10px;
+        border-radius: 5px;
+        background-color: white;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      #confirm:focus {
+        outline: 0;
+      }
+
+      #confirm:hover {
+        background-color: #cee5e5;
+      }
+
+      .background {
+        text-align: justify !important;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+        font-size: 40px;
+        font-family: 'Pacifico', cursive;
+        color: #5d9e9d;
+      }
+
+      #description {
+        color: gray;
+      }
+
+      .form-row {
+        margin-top: -5px;
+      }
+
+      .box {
+        width: 700px;
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed velit dignissim sodales ut eu sem integer vitae. Purus semper eget duis at. Amet purus gravida quis blandit turpis. Ac turpis egestas sed tempus urna et. Dolor sit amet consectetur adipiscing elit. Tortor aliquam nulla facilisi cras fermentum odio. Et magnis dis parturient montes nascetur ridiculus. Justo eget magna fermentum iaculis. Morbi tincidunt ornare massa eget egestas purus.
+
+      Praesent semper feugiat nibh sed pulvinar proin gravida hendrerit lectus. Molestie nunc non blandit massa. Urna nec tincidunt praesent semper feugiat nibh sed pulvinar proin. Ut sem viverra aliquet eget sit amet tellus cras adipiscing. Tristique nulla aliquet enim tortor at auctor urna nunc. Viverra mauris in aliquam sem fringilla ut morbi. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Tellus in hac habitasse platea dictumst vestibulum rhoncus est. Etiam sit amet nisl purus in mollis nunc sed. At consectetur lorem donec massa.
+    </div>
+
+    <div id="main">
+      <div class="box">
+        <fieldset>
+          <h1>Speakify</h1>
+          <h3>CSV text to speech synthesizer</h3>
+          <p id="description">Speakify uses the soundoftext API to access Google's speech synthesis capabilities and rapidly download pronunciations for wordlists</p>
+
+          <label for="languages">Choose a language</label>
+          <select class="field__select" name="languages" id="languages">
+            <option value="af-ZA">Afrikaans</option>
+            <option value="sq">Albanian</option>
+            <option value="ar-AE">Arabic</option>
+            <option value="hy">Armenian</option>
+            <option value="bn-BD">Bengali (Bangladesh)</option>
+            <option value="bn-IN">Bengali (India)</option>
+            <option value="bs">Bosnian</option>
+            <option value="ca-ES">Catalan</option>
+            <option value="cmn-Hant-TW">Chinese</option>
+            <option value="hr-HR">Croatian</option>
+            <option value="cs-CZ">Czech</option>
+            <option value="da-DK">Danish</option>
+            <option value="nl-NL">Dutch</option>
+            <option value="en-AU">English (Australia)</option>
+            <option value="en-GB">English (United Kingdom)</option>
+            <option value="en-US" selected="selected">English (United States)</option>
+            <option value="eo">Esperanto</option>
+            <option value="fil-PH">Filipino</option>
+            <option value="fi-FI">Finnish</option>
+            <option value="fr-FR">French</option>
+            <option value="fr-CA">French (Canada)</option>
+            <option value="de-DE">German</option>
+            <option value="el-GR">Greek</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="hu-HU">Hungarian</option>
+            <option value="is-IS">Icelandic</option>
+            <option value="id-ID">Indonesian</option>
+            <option value="it-IT">Italian</option>
+            <option value="ja-JP">Japanese (Japan)</option>
+            <option value="km">Khmer</option>
+            <option value="ko-KR">Korean</option>
+            <option value="la">Latin</option>
+            <option value="lv">Latvian</option>
+            <option value="mk">Macedonian</option>
+            <option value="ne">Nepali</option>
+            <option value="nb-NO">Norwegian</option>
+            <option value="pl-PL">Polish</option>
+            <option value="pt-BR">Portuguese</option>
+            <option value="ro-RO">Romanian</option>
+            <option value="ru-RU">Russian</option>
+            <option value="sr-RS">Serbian</option>
+            <option value="si">Sinhala</option>
+            <option value="sk-SK">Slovak</option>
+            <option value="es-MX">Spanish (Mexico)</option>
+            <option value="es-ES">Spanish (Spain)</option>
+            <option value="sw">Swahili</option>
+            <option value="sv-SE">Swedish</option>
+            <option value="ta">Tamil</option>
+            <option value="th-TH">Thai</option>
+            <option value="tr-TR">Turkish</option>
+            <option value="uk-UA">Ukrainian</option>
+            <option value="vi-VN">Vietnamese</option>
+            <option value="cy">Welsh</option>
+          </select>
+          <p>Choose a CSV file:</p>
+          <div class ="form-row">
+              <input type="file"
+                     id="words" name="words"
+                     accept=".csv">
+          </div>
+          <button type="button" id="confirm">Synthesise</button>
+        </fieldset>
+      </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src = "papaparse.js"></script>
+    <script type="text/javascript">
+
+      function parseCSV(file) {
+        return new Promise((resolve, reject) => {
+          Papa.parse(file, {
+            error: reject,
+            complete: resolve,
+          })
+        })
+      }
+
+
+
+      $("#confirm").click(() => {
+        let language = document.getElementById("languages").value;
+        console.log(language);
+
+        let file = document.getElementById("words").files[0];
+        console.log(file)
+        let folderName = file.name.slice(0, -4); // remove .csv extension with slice
+
+        parseCSV(file).then(result => {
+          let vocabList = result.data;
+          let vocabArray = [];
+
+          vocabList.forEach(item => {
+            if(item[0] != "English" && item[0] != "") { // skip header row and empty cells
+              vocabArray.push(item[0].trim());
+            }
+          })
+
+          console.log(vocabArray);
+
+
+          let promises = [];
+
+          for(let i = 0; i < vocabArray.length; i++) {
+            promises[i] = $.ajax({
+                contentType: 'application/json',
+                url: "https://api.soundoftext.com/sounds",
+                type: "POST",
+                data: JSON.stringify({
+                  "engine": "Google",
+                  "data": {
+                    "text": vocabArray[i],
+                    "voice": language
+                  }
+                })
+              })
+          }
+
+          Promise.all(promises).then(values => {
+            console.log(values)
+
+            // match vocabArray with id values
+            let finalArray = [];
+            if(values.length != vocabArray.length) {
+              return console.log("id values array and vocab array do not match in length")
+            }
+
+            // merge id from values array with corresponding text from vocabArray
+            for(let i = 0; i < values.length; i++) {
+              let subArray = [];
+              subArray.push(vocabArray[i]);
+              subArray.push(values[i]['id']);
+              finalArray.push(subArray);
+            }
+
+            console.log(finalArray);
+
+            $.ajax({
+              url: "/addURL",
+              type: "POST",
+              data: {
+                data: JSON.stringify(finalArray),
+                folderName: folderName,
+              },
+            })
+          }).catch(e => console.log(e))
+
+        });
+      })
+
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "texttospeech",
+  "version": "1.0.0",
+  "description": "",
+  "main": "getPronunciation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "hbs": "^4.0.1",
+    "papaparse": "^4.6.2",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
