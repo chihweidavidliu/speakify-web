@@ -187,6 +187,7 @@
           <button type="button" id="confirm">Synthesise</button>
 
           <img src="loading.gif" id="loading">
+          <p id="progress"></p>
           <p id="message"></p>
         </fieldset>
       </div>
@@ -201,6 +202,7 @@
     <script type="text/javascript">
 
       let messageBox = document.getElementById("message");
+      let progressBar = document.getElementById("progress");
 
       function parseCSV(file) {
         return new Promise((resolve, reject) => {
@@ -282,6 +284,8 @@
             // get the sound files from soundoftextAPI using Promise.all
             let promises2= []
 
+            let count = 1;
+
             for(let i = 0; i < finalArray.length; i++) {
               promises2[i] = new Promise((resolve, reject) => {
                 let id = finalArray[i][1];
@@ -295,8 +299,7 @@
                   let url = result.location;
                   if(!url) {
                     messageBox.innerHTML += `URL for ${word} not found<br>`;
-                    console.log(`URL for ${word} not found`);
-                    reject(`URL for ${word} not found`);
+                    return reject(`URL for ${word} not found`);
                   }
 
                   JSZipUtils.getBinaryContent(`https://cors-anywhere.herokuapp.com/${url}`, function (err, data) {
@@ -305,7 +308,9 @@
                    }
 
                    console.log(data)
-                   folder.file(`${i + 1}-${word}.mp3`, data, {binary:true})
+                   progressBar.innerHTML = `Preparing file ${count}/${finalArray.length}`;
+                   count++;
+                   folder.file(`${i + 1}-${word}.mp3`, data, {binary:true});
                    resolve()
                });
 
@@ -319,6 +324,7 @@
                   // Force down of the Zip file
                   saveAs(content, "sounds.zip");
                   $("#loading").toggle();
+                  progressBar.innerHTML = "";
               });
             }).catch(e => {
               console.log(e)
