@@ -213,17 +213,15 @@
 
       $("#confirm").click(() => {
 
+        // check for valid input
         if(!document.getElementById("languages").value || !document.getElementById("words").files[0]) {
-          return messageBox.innerText = "Please add a CSV file"
+          return messageBox.innerHTML = "Please add a CSV file<br>"
         }
 
-        $("#loading").toggle();
+        $("#loading").toggle(); // display loading gif
 
         let language = document.getElementById("languages").value;
-        console.log(language);
-
         let file = document.getElementById("words").files[0];
-        console.log(file)
         let folderName = file.name.slice(0, -4); // remove .csv extension with slice
 
         parseCSV(file).then(result => {
@@ -238,9 +236,9 @@
 
           console.log(vocabArray);
 
-
           let promises = [];
 
+          // Loop through vocabArray and set an AJAX POST call for the relevant word as a promise in the promises array
           for(let i = 0; i < vocabArray.length; i++) {
             promises[i] = $.ajax({
                 contentType: 'application/json',
@@ -296,18 +294,10 @@
                   console.log(result.location)
                   let url = result.location;
                   if(!url) {
-                    messageBox.innerText += `URL for ${word} not found`;
-                    return console.log(`URL for ${word} not found`);
+                    messageBox.innerHTML += `URL for ${word} not found<br>`;
+                    console.log(`URL for ${word} not found`);
+                    reject(`URL for ${word} not found`);
                   }
-
-                  // $.ajax({
-                  //   url: url,
-                  //   type: `https://cors-anywhere.herokuapp.com/${url}`,
-                  // }).then(data => {
-                  //     console.log(data)
-                  //     folder.file(`${i + 1}-${word}.mp3`, data, {binary:true})
-                  //     resolve()
-                  // }).catch(e => console.log(e))
 
                   JSZipUtils.getBinaryContent(`https://cors-anywhere.herokuapp.com/${url}`, function (err, data) {
                    if(err) {
