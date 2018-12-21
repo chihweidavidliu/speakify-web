@@ -287,10 +287,10 @@
             let count = 1;
 
             for(let i = 0; i < finalArray.length; i++) {
-              promises2[i] = new Promise((resolve, reject) => {
-                let id = finalArray[i][1];
-                let word = finalArray[i][0];
+              let id = finalArray[i][1];
+              let word = finalArray[i][0];
 
+              promises2[i] = new Promise((resolve, reject) => {
                 $.ajax({
                   url: `https://api.soundoftext.com/sounds/${id}`,
                   type: "GET"
@@ -315,10 +315,11 @@
                });
 
                 }).catch(e => reject(e));
+
               })
             }
 
-            Promise.all(promises2).then(result => {
+            Promise.all(promises2.map(p => p.catch(e => e))).then(result => { // the map function turns all errors into resolved values
               zip.generateAsync({type:"blob"})
               .then(function(content) {
                   // Force down of the Zip file
